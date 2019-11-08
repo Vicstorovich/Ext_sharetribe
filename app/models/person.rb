@@ -97,6 +97,7 @@ class Person < ApplicationRecord
   has_many :emails, :dependent => :destroy, :inverse_of => :person
 
   has_one :location, -> { where(location_type: :person) }, :dependent => :destroy, :inverse_of => :person
+  has_one :auction_bid
 
   has_many :participations, :dependent => :destroy
   has_many :conversations, :through => :participations, :dependent => :destroy

@@ -1,0 +1,3 @@
+<% if @current_user.auction_bid.persisted? %>
+  $('.price_auction_bid').html('<%= j render template: "auction_bids/new" %>');
+<% end %>

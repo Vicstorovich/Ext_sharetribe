@@ -849,5 +849,13 @@ module ApplicationHelper
   def social_link_placeholder(provider)
     SOCIAL_LINKS[provider.to_sym][:placeholder]
   end
+
+  def choice_action_path(*args)
+    if args.last.auction_bid.present?
+      [args[0], args.last.auction_bid]
+    else
+      [args[0], args[1]]
+    end
+  end
 end
 # rubocop:enable Metrics/ModuleLength

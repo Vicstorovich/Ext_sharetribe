@@ -1,0 +1,4 @@
+= form_for choice_action_path(@listing, @auction_bid, @current_user) do |form|
+  = form.label :price, "Your auction rate"
+  = form.text_field :price_auction_bid, :class => "price-field", :maxlength => "10", :placeholder => "0", :value => (@current_person.auction_bid.present? ? @current_user.auction_bid.price_auction_bid : @listing.price)
+  = form.button 'Поднять ставку', :class => "enabled-book-button"
