@@ -330,6 +330,7 @@ CREATE TABLE `communities` (
   `pre_approved_listings` tinyint(1) DEFAULT '0',
   `allow_free_conversations` tinyint(1) DEFAULT '1',
   `email_admins_about_new_transactions` tinyint(1) DEFAULT '0',
+  `show_location` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_communities_on_uuid` (`uuid`),
   KEY `index_communities_on_domain` (`domain`) USING BTREE,
@@ -2434,5 +2435,6 @@ INSERT INTO `schema_migrations` (version) VALUES
 ('20190718081745'),
 ('20190904115045'),
 ('20191104164403');
+
 
 
