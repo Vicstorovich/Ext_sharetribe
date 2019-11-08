@@ -1,8 +1,10 @@
 class ListingsController < ApplicationController
+  VALID_TITLE_CATEGORY_FOR_AUCSION = /au[a-z]{1,5}on/
   class ListingDeleted < StandardError; end
 
   # Skip auth token check as current jQuery doesn't provide it automatically
   skip_before_action :verify_authenticity_token, :only => [:close, :update, :follow, :unfollow]
+  after_action :publish_listing, only: [:update]
 
   before_action :only => [:edit, :edit_form_content, :update, :close, :follow, :unfollow] do |controller|
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_view_this_content")
@@ -172,6 +174,10 @@ class ListingsController < ApplicationController
         ).html_safe
         redirect_to new_listing_path
       end
+    end
+
+    if VALID_TITLE_CATEGORY_FOR_AUCSION.match(@listing.category.url)
+      Aucsion.create(price_aucsion_cents: @listing.price_cents, listing_id: @listing.id)
     end
   end
 
@@ -529,5 +535,17 @@ class ListingsController < ApplicationController
       else
         @current_user
       end
+  end
+
+  def publish_listing
+    return if listing.errors.any?
+
+    ActionCable.server.broadcast(
+      "listings",
+      ApplicationController.render(
+        partial: "aucsions/aucsion",
+        locals: { listing: @listing }
+        )
+      )
   end
 end
