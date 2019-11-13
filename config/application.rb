@@ -160,6 +160,8 @@ module Kassi
     #   g.test_framework  :test_unit, :fixture => true
     # end
 
+    config.action_cable.disable_request_forgery_protection = false
+
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 

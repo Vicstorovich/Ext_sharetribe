@@ -1,4 +1,33 @@
 module ListingsHelper
+  VALID_TITLE_CATEGORY_FOR_AUCSION = /auc[a-z]{1,9}/
+
+  def valid_title_category_for_aucsion(listing)
+     if VALID_TITLE_CATEGORY_FOR_AUCSION.match(listing.category.url)
+      return true
+    else
+      return false
+    end
+  end
+
+  def person_auction_winne(listing, person)
+    listing.auction_bids.maximum(:price_auction_bid_cents) == person.auction_bid.price_auction_bid_cents
+  end
+
+  def auction_winne(listing, person)
+    listing.valid_until.days_ago(1) == Time.zone.now && person_auction_winne(listing, person)
+  end
+
+  def auction_start(listing)
+    listing.valid_until.days_ago(1) != Time.zone.now && valid_title_category_for_aucsion(listing)
+  end
+
+  def maximum_contract_price(listing)
+    if AuctionBid.table_exists?
+      AuctionBid.where(price_auction_bid_cents: listing.auction_bids.maximum(:price_auction_bid_cents))[0].price_auction_bid
+    else
+      nil
+    end
+  end
 
   # Class is selected if conversation type is currently selected
   def get_map_tab_class(tab_name)

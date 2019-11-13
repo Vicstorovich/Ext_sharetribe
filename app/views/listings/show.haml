@@ -125,7 +125,14 @@
         .col-12
           .listing-price
             %span.listing-price-amount
+              - if auction_start(@listing)
+                %h5 Price start
               = MoneyViewUtils.to_humanized(@listing.price)
+              - if auction_start(@listing)
+                %hr/
+                = render partial: "auction_bids/contract_praice", locals: { listing: @listing}
+                = render "auction_bids/form"
+
             - with_quantity_text(@current_community, @listing) do |text|
               %span.listing-price-quantity
                 = text
@@ -133,7 +140,8 @@
     .row-with-divider
       .col-12
         #listing-message-links
-          = render :partial => "listing_actions"
+          - if auction_winne(@listing, @current_person)
+            = render :partial => "listing_actions"
 
     .row-with-divider
       .col-12
