@@ -1,4 +1,6 @@
 class AuctionBidsController < ApplicationController
+  after_action :publish_contract, only: [:update]
+
   def create
     auction_bid = listing.auction_bids.build
     auction_bid.assign_attributes(auction_bid_params)
@@ -10,6 +12,7 @@ class AuctionBidsController < ApplicationController
   end
 
   def update
+    @current_user
     if auction_bid.update(auction_bid_params)
       flash[:notice] = "You have safely raised the price"
       redirect_to listing
@@ -32,5 +35,16 @@ class AuctionBidsController < ApplicationController
 
   def auction_bid_params
     params.require(:auction_bid).permit(:listing_id, :person_id, :price_auction_bid)
+  end
+
+  def publish_contract
+    return if auction_bid.errors.any?
+
+    ActionCable.server.broadcast(
+      'aucton_bids',
+      ApplicationController.render(
+        partial: "auction_bids/contract_praice", locals: { listing: @listing}
+        )
+      )
   end
 end
