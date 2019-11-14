@@ -68,6 +68,22 @@ CREATE TABLE `ar_internal_metadata` (
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `auction_bids`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auction_bids` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `listing_id` bigint(20) DEFAULT NULL,
+  `person_id` varchar(255) DEFAULT NULL,
+  `price_auction_bid_cents` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_auction_bids_on_listing_id_and_person_id` (`listing_id`,`person_id`),
+  KEY `index_auction_bids_on_listing_id` (`listing_id`),
+  KEY `index_auction_bids_on_person_id` (`person_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `auth_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -133,6 +149,7 @@ CREATE TABLE `categories` (
   `community_id` int(11) DEFAULT NULL,
   `sort_priority` int(11) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
+  `for_auction` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `index_categories_on_community_id` (`community_id`) USING BTREE,
   KEY `index_categories_on_parent_id` (`parent_id`) USING BTREE,
@@ -856,6 +873,7 @@ CREATE TABLE `listings` (
   `availability` varchar(32) DEFAULT 'none',
   `per_hour_ready` tinyint(1) DEFAULT '0',
   `state` varchar(255) DEFAULT 'approved',
+  `auction_bids_count` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_listings_on_uuid` (`uuid`),
   KEY `index_listings_on_new_category_id` (`category_id`) USING BTREE,
@@ -2413,10 +2431,19 @@ INSERT INTO `schema_migrations` (version) VALUES
 ('20190305112030'),
 ('20190319114719'),
 ('20190319122745'),
+('20190627055931'),
+('20190705083608'),
+('20190705100256'),
 ('20190717105844'),
 ('20190718081745'),
 ('20190904115045'),
-('20190627055931'),
-('20190705083608'),
-('20190705100256');
+('20191104164403'),
+('20191108115802'),
+('20191108124856'),
+('20191108160720'),
+('20191108195740'),
+('20191114104918'),
+('20191114105407'),
+('20191114105547');
+
 

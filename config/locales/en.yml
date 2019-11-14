@@ -21,6 +21,8 @@ en:
       form:
         category_name:
           category_title: "Category title"
+        category_for_auction:
+          category_for_auction: "For auction"
         category_parent:
           category_parent: "Parent category"
           no_parent: "No parent"

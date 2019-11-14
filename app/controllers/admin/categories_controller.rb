@@ -132,7 +132,7 @@ class Admin::CategoriesController < Admin::AdminBaseController
   end
 
   def category_params
-    params.require(:category).slice(:parent_id, :translation_attributes, :sort_priority, :url, :basename).permit!
+    params.require(:category).slice(:parent_id, :translation_attributes, :for_auction, :sort_priority, :url, :basename).permit!
   end
 
 end

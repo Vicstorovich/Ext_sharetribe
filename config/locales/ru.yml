@@ -21,6 +21,8 @@ ru:
       form:
         category_name:
           category_title: "Название категории"
+        category_for_auction:
+          category_for_auction: "Категория для аукциона"
         category_parent:
           category_parent: "Родительская категория"
           no_parent: "Нет вышестоящей"
