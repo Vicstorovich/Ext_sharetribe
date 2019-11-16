@@ -79,9 +79,9 @@ CREATE TABLE `auction_bids` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `index_auction_bids_on_listing_id_and_person_id` (`listing_id`,`person_id`),
   KEY `index_auction_bids_on_listing_id` (`listing_id`),
-  KEY `index_auction_bids_on_person_id` (`person_id`)
+  KEY `index_auction_bids_on_person_id` (`person_id`),
+  KEY `index_auction_bids_on_listing_id_and_person_id` (`listing_id`,`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `auth_tokens`;

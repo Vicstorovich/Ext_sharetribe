@@ -67,6 +67,7 @@
 #
 
 class Listing < ApplicationRecord
+  TIME_UNTIL_AUCTION_ENDS = 23
 
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper
@@ -83,6 +84,7 @@ class Listing < ApplicationRecord
   has_many :custom_field_values, :dependent => :destroy
   has_many :custom_dropdown_field_values, :class_name => "DropdownFieldValue", :dependent => :destroy
   has_many :custom_checkbox_field_values, :class_name => "CheckboxFieldValue", :dependent => :destroy
+  has_many :auction_bids, dependent: :delete_all
 
   has_one :location, :dependent => :destroy
   has_one :origin_loc, -> { where('location_type = ?', 'origin_loc') }, :class_name => "Location", :dependent => :destroy, :inverse_of => :listing
@@ -386,5 +388,25 @@ class Listing < ApplicationRecord
     end
     ids = listings.pluck(:id)
     ListingImage.where(listing_id: ids).destroy_all
+  end
+
+  def person_leader_auction?(person)
+    auction_bids.maximum(:price_auction_bid_cents) == person.auction_bids.last.price_auction_bid_cents
+  end
+
+  def auction_winne?(person)
+    valid_until.ago(TIME_UNTIL_AUCTION_ENDS.hour) == Time.zone.now && person_leader_auction?(person)
+  end
+
+  def auction_start?
+    valid_until.ago(TIME_UNTIL_AUCTION_ENDS.hour) != Time.zone.now && category.for_auction == true
+  end
+
+  def maximum_contract_price
+    if auction_bids.exists?
+      auction_bids.where(price_auction_bid_cents: self.auction_bids.maximum(:price_auction_bid_cents))[0].price_auction_bid
+    else
+      nil
+    end
   end
 end

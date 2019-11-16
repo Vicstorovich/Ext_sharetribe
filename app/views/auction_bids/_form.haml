@@ -1,0 +1,4 @@
+= form_for [@auction_bid.listing, @auction_bid] do |form|
+  = form.label :price, "Your auction rate"
+  = form.text_field :price_auction_bid, :class => "price-field", :maxlength => "10", :placeholder => "0", :value => (@current_person.auction_bids.last.present? ? @current_user.auction_bids.last.price_auction_bid : @listing.price)
+  = form.button 'Поднять ставку', :class => "enabled-book-button"

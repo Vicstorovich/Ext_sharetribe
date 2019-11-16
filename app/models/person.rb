@@ -95,6 +95,7 @@ class Person < ApplicationRecord
 
   has_many :listings, -> { exist }, :dependent => :destroy, :foreign_key => "author_id", :inverse_of => :author
   has_many :emails, :dependent => :destroy, :inverse_of => :person
+  has_many :auction_bids
 
   has_one :location, -> { where(location_type: :person) }, :dependent => :destroy, :inverse_of => :person
 

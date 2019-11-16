@@ -8,6 +8,6 @@ class CreateAuctionBids < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    add_index :auction_bids, [:listing_id, :person_id], :unique => true
+    add_index :auction_bids, [:listing_id, :person_id]
   end
 end

@@ -393,6 +393,7 @@ Rails.application.routes.draw do
         get :verification_required
       end
       resources :comments, :only => [:create, :destroy]
+      resources :auction_bids, only: [:create]
       resources :listing_images do
         collection do
           post :add_from_file
