@@ -1,0 +1,14 @@
+= form_with  url: person_path(@current_person), method: 'get', local: true do |f|
+  = f.select :listing_id, options_for_select(@listings.collect { |listing| [listing.title.titleize, listing.id] }), { :include_blank => true }
+  = f.submit 'Ok'
+- if @listing.present?
+  %h2
+    = @listing.title
+  %h3
+    %ul
+      - @listing.auction_bids.each do |auction_bid|
+        %li
+          = MoneyViewUtils.to_humanized(auction_bid.price_auction_bid)
+          %br/
+          = auction_bid.created_at.strftime("%H:%M, %B %d, %Y")
+

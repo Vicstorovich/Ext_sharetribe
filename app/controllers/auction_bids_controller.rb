@@ -3,7 +3,7 @@ class AuctionBidsController < ApplicationController
   def create
     auction_bid = listing.auction_bids.build
     auction_bid.assign_attributes(auction_bid_params)
-    auction_bid.person_id = current_user.id
+    auction_bid.person_id = current_user
 
     if auction_bid.ensure_price_greater_than_previous?(listing)
       auction_bid.save!

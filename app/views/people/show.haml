@@ -46,6 +46,11 @@
 
     .row
       %h2.people-header
+        = t(".participation")
+        #profile-testimonials-list
+          = render template: 'auction_bids/select_listings' if current_person.auction_bids.present?
+
+      %h2.people-header
         - if @service.listings.total_entries > 0
           - if current_user?(person) && params[:show_closed]
             = pluralize(@service.listings.total_entries, t(".listing"), t(".listings"))

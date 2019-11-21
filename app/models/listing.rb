@@ -67,7 +67,7 @@
 #
 
 class Listing < ApplicationRecord
-  TIME_UNTIL_AUCTION_ENDS = 23
+  HOURS_UNTIL_AUCTION_ENDS = 23
 
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper
@@ -113,6 +113,8 @@ class Listing < ApplicationRecord
   validates_length_of :title, :in => 2..65, :allow_nil => false
 
   scope :exist, -> { where(deleted: false) }
+
+  scope :auction_bids_current_person, ->(person) { joins(:auction_bids).where(auction_bids: { person_id: person.id }) }
 
   scope :search_title_author_category, ->(pattern) do
     joins(:author)
@@ -395,11 +397,11 @@ class Listing < ApplicationRecord
   end
 
   def auction_winne?(person)
-    valid_until.ago(TIME_UNTIL_AUCTION_ENDS.hour) == Time.zone.now && person_leader_auction?(person)
+    valid_until.ago(HOURS_UNTIL_AUCTION_ENDS.hour) == Time.zone.now && person_leader_auction?(person)
   end
 
   def auction_start?
-    valid_until.ago(TIME_UNTIL_AUCTION_ENDS.hour) != Time.zone.now && category.for_auction == true
+    valid_until.ago(HOURS_UNTIL_AUCTION_ENDS.hour) != Time.zone.now && category.for_auction == true
   end
 
   def maximum_contract_price
