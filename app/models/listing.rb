@@ -114,6 +114,8 @@ class Listing < ApplicationRecord
 
   scope :exist, -> { where(deleted: false) }
 
+  scope :auction_bids_current_person, ->(person) { joins(:auction_bids).where(auction_bids: { person_id: person.id }) }
+
   scope :search_title_author_category, ->(pattern) do
     joins(:author)
       .joins(:category => :translations)

@@ -2341,6 +2341,9 @@ ru:
       commission_payment_description: "Сервис %{service_name} получил комиссию от транзакции относящейся к %{listing_title}"
     wait_while_loading: Подождите.
     chatting_with_paypal: "Мы общаемся с PayPal."
+  auction_bids:
+    select_listintg:
+      submit: "Выбор"
   people:
     edit_links:
       activate: Активировать
@@ -2392,6 +2395,7 @@ ru:
       no_image: "Нет изображения"
       manage_listings: "Управлять всеми моими публикациями"
     show:
+      participation: "Участие в аукционах"
       contact: "Связаться с %{person}"
       about_me: "Обо мне:"
       add_description: "Расскажите немного о себе"
