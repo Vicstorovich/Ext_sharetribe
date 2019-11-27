@@ -167,4 +167,46 @@ describe Listing, type: :model do
       expect(hammer.deleted?).to be true
     end
   end
+
+  describe "methods for template show from association auction_bid" do
+    let!(:person_1) { FactoryGirl.create(:person) }
+    let!(:person_2) { FactoryGirl.create(:person) }
+    let!(:category_1) { FactoryGirl.create(:category, for_auction: true) }
+    let!(:category_2) { FactoryGirl.create(:category, for_auction: false) }
+    let!(:listing) { FactoryGirl.create(:listing, listing_shape_id: 123) }
+    let!(:listing_not_auction_bids) { FactoryGirl.create(:listing, listing_shape_id: 123) }
+    let!(:auction_bid_first) { FactoryGirl.create(:auction_bid, listing_id: listing.id, person_id: person_1.id, price_auction_bid_cents: 5) }
+    let!(:auction_bid_last) { FactoryGirl.create(:auction_bid, listing_id: listing.id, person_id: person_2.id, price_auction_bid_cents: 7) }
+
+    it "person_leader_auction?" do
+      expect(listing.auction_bids.maximum(:price_auction_bid_cents)).to eq(person_2.auction_bids.last.price_auction_bid_cents)
+      expect(listing.auction_bids.maximum(:price_auction_bid_cents) == person_2.auction_bids.last.price_auction_bid_cents).to eq true
+    end
+
+    it "person_not_leader_auction?" do
+      expect(listing.auction_bids.maximum(:price_auction_bid_cents)).to_not eq(person_1.auction_bids.last.price_auction_bid_cents)
+      expect(listing.auction_bids.maximum(:price_auction_bid_cents) == person_1.auction_bids.last.price_auction_bid_cents).to eq false
+    end
+
+    it "auction_winner?" do
+      expect(listing.valid_until.ago(23.hour) == Time.zone.now && listing.person_leader_auction?(person_1)).to_not eq true
+    end
+
+    it "auction_start?" do
+      expect(listing.valid_until.ago(23.hour) != Time.zone.now && category_1.for_auction == true).to_not eq false
+    end
+
+    it "auction_not_start?" do
+      expect(listing.valid_until.ago(23.hour) != Time.zone.now && category_2.for_auction == true).to_not eq true
+    end
+
+    it "listing_auction_has_bids" do
+      expect(listing.auction_bids.exists?).to eq true
+      expect(listing.auction_bids.where(price_auction_bid_cents: listing.auction_bids.maximum(:price_auction_bid_cents))[0]).to eq(auction_bid_last)
+    end
+
+    it "listing_auction_has_bids" do
+      expect(listing_not_auction_bids.auction_bids.exists?).to eq false
+    end
+  end
 end

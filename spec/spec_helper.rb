@@ -64,6 +64,7 @@ prefork = lambda {
 
     config.filter_run focus: true
     config.run_all_when_everything_filtered = true
+    config.example_status_persistence_file_path = "./tmp/rspec_examples.txt"
   end
 
   def uploaded_file(filename, content_type)

@@ -128,6 +128,9 @@ FactoryGirl.define do
     uuid
   end
 
+  factory :auction_bid do
+  end
+
   factory :transaction do
     build_association(:person, as: :starter)
     build_association(:community)

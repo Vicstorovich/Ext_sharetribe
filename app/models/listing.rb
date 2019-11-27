@@ -396,7 +396,7 @@ class Listing < ApplicationRecord
     auction_bids.maximum(:price_auction_bid_cents) == person.auction_bids.last.price_auction_bid_cents
   end
 
-  def auction_winne?(person)
+  def auction_winner?(person)
     valid_until.ago(HOURS_UNTIL_AUCTION_ENDS.hour) == Time.zone.now && person_leader_auction?(person)
   end
 
@@ -406,7 +406,7 @@ class Listing < ApplicationRecord
 
   def maximum_contract_price
     if auction_bids.exists?
-      auction_bids.where(price_auction_bid_cents: self.auction_bids.maximum(:price_auction_bid_cents))[0].price_auction_bid
+      auction_bids.where(price_auction_bid_cents: auction_bids.maximum(:price_auction_bid_cents))[0].price_auction_bid
     else
       nil
     end
