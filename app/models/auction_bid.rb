@@ -17,18 +17,24 @@
 #
 
 class AuctionBid < ApplicationRecord
-  belongs_to :listing, counter_cache: :auction_bids_count
+  belongs_to :listing, counter_cache: :auction_bids_count, inverse_of: :auction_bids
   belongs_to :person
 
   validates :price_auction_bid_cents, numericality: {greater_than_or_equal_to: 0.01}
 
+  validate :prohibition_lower_auction_bid
+
   monetize :price_auction_bid_cents, allow_nil: true, with_model_currency: :currency
 
-  def ensure_price_greater_than_previous?(listing)
+  private
+
+  def prohibition_lower_auction_bid
     unless listing.auction_bids.maximum(:price_auction_bid_cents).nil?
-      listing.auction_bids.maximum(:price_auction_bid_cents) < price_auction_bid_cents
+      return if listing.auction_bids.maximum(:price_auction_bid_cents) < price_auction_bid_cents
     else
-      listing.price_cents < price_auction_bid_cents
+      return if listing.price_cents < price_auction_bid_cents
     end
+
+    errors.add :price_auction_bid
   end
 end

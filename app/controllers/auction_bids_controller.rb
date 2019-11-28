@@ -4,10 +4,10 @@ class AuctionBidsController < ApplicationController
     auction_bid = listing.auction_bids.build
     auction_bid.assign_attributes(auction_bid_params)
     auction_bid.person = current_user
+# binding.pry
+    if auction_bid.save
 
-    if auction_bid.ensure_price_greater_than_previous?(listing)
-      auction_bid.save!
-      flash[:notice] = "You have safely raised the price"
+      flash[:notice] = "You have safely raised the price OK"
       redirect_to listing
     else
       flash[:notice] = "NIZЯ"
