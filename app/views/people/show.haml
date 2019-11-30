@@ -46,6 +46,13 @@
 
     .row
       %h2.people-header
+        = t(".participation")
+        #profile-testimonials-list
+          - if current_person.auction_bids.any?
+
+            = render partial: "select_listings_current_person", locals: { listings: @current_person_listings_auction_bids, listing: @current_person_listing_auction_bids }
+
+      %h2.people-header
         - if @service.listings.total_entries > 0
           - if current_user?(person) && params[:show_closed]
             = pluralize(@service.listings.total_entries, t(".listing"), t(".listings"))

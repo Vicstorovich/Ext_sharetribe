@@ -21,6 +21,8 @@ en:
       form:
         category_name:
           category_title: "Category title"
+        category_for_auction:
+          category_for_auction: "For auction"
         category_parent:
           category_parent: "Parent category"
           no_parent: "No parent"
@@ -2504,6 +2506,9 @@ en:
       commission_payment_description: "Marketplace %{service_name} took this commission from transaction regarding %{listing_title}"
     wait_while_loading: "Please wait."
     chatting_with_paypal: "We are chatting with PayPal."
+  auction_bids:
+    select_listintg:
+      submit: "Choice"
   people:
     edit_links:
       activate: Activate
@@ -2553,6 +2558,7 @@ en:
       no_image: "No image"
       manage_listings: "Manage all my listings"
     show:
+      participation: "Participation in auction"
       contact: "Contact %{person}"
       about_me: "About me:"
       add_description: "Share something about yourself"

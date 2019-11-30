@@ -10,6 +10,7 @@
 #  community_id  :integer
 #  sort_priority :integer
 #  url           :string(255)
+#  for_auction   :boolean          default(FALSE), not null
 #
 # Indexes
 #

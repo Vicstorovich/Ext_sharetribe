@@ -26,6 +26,8 @@ class PeopleController < Devise::RegistrationsController
     redirect_to landing_page_path and return if @current_community.private? && !@current_user
     @selected_tribe_navi_tab = "members"
     @seo_service.user = @service.person
+    @current_person_listings_auction_bids = Listing.auction_bids_current_person(current_person).uniq &:id
+    @current_person_listing_auction_bids = Listing.find(params[:listing_id]) if params[:listing_id].present?
   end
 
   def new
